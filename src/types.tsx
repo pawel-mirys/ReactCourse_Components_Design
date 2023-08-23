@@ -34,4 +34,6 @@ export type CarTableItemType = {
   wheels: number;
 };
 
-export type TableDataType = FruitTableItemType
+export type TableDataType = {
+  [x: string]: React.ReactNode;
+};

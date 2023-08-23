@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment } from 'react';
 import { TableConfigType, TableDataType } from '../../types';
 
 export type TableProps = React.TableHTMLAttributes<HTMLTableElement> & {
   data: TableDataType[];
-  config: TableConfigType<TableDataType>;
-  keyFn: (item: TableDataType) => void;
+  config: TableConfigType<any>;
+  keyFn: (item: any) => React.Key;
 };
 
 export const Table: React.FC<TableProps> = ({
@@ -31,7 +32,7 @@ export const Table: React.FC<TableProps> = ({
     });
 
     return (
-      <tr className='border-b' key={keyFn(rowData)!}>
+      <tr className='border-b' key={keyFn(rowData)}>
         {renderedCells}
       </tr>
     );
