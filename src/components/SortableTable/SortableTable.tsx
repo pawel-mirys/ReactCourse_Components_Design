@@ -1,31 +1,13 @@
-import { useState } from 'react';
 import { BsArrowUpShort, BsArrowDownShort } from 'react-icons/bs';
 import { Table, TableProps } from '../Table/Table';
+import { useSort } from '../../hooks/use-sort';
 
 export const SortableTable = (props: TableProps) => {
   const { config, data } = props;
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
-  const [sortBy, setSortBy] = useState<string | number | null>(null);
-
-  const handleClick = (label: string | number) => {
-    if (sortBy && label !== sortBy) {
-      setSortOrder('asc');
-      setSortBy(label);
-      return;
-    }
-
-    if (sortOrder === null) {
-      setSortOrder('asc');
-      setSortBy(label);
-    } else if (sortOrder === 'asc') {
-      setSortOrder('desc');
-      setSortBy(label);
-    } else if (sortOrder === 'desc') {
-      setSortOrder(null);
-      setSortBy(null);
-    }
-  };
-
+  const { sortBy, sortOrder, sortedData, setSortColumn } = useSort(
+    data,
+    config
+  );
   const getIcons = (
     label: string,
     sortBy: string | number | null,
@@ -71,7 +53,7 @@ export const SortableTable = (props: TableProps) => {
         <th
           className='cursor-pointer hover:bg-gray-100'
           onClick={() => {
-            handleClick(column.label);
+            setSortColumn(column.label);
           }}>
           <div className='flex items-center'>
             {getIcons(column.label, sortBy, sortOrder)}
@@ -81,23 +63,6 @@ export const SortableTable = (props: TableProps) => {
       ),
     };
   });
-
-  let sortedData = data;
-
-  if (sortBy && sortOrder) {
-    const { sortValue } = config.find((column) => column.label === sortBy);
-    sortedData = [...data].sort((a, b) => {
-      const valueA = sortValue(a);
-      const valueB = sortValue(b);
-      const reverseOrder = sortOrder === 'asc' ? 1 : -1;
-
-      if (typeof valueA === 'string') {
-        return valueA.localeCompare(valueB) * reverseOrder;
-      } else {
-        return (valueA - valueB) * reverseOrder;
-      }
-    });
-  }
 
   return <Table {...props} config={updatedConfig} data={sortedData} />;
 };

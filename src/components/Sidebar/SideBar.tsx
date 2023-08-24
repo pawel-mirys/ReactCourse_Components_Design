@@ -9,6 +9,7 @@ export const SideBar = () => {
     { label: 'Buttons', path: routes.buttons },
     { label: 'Modal', path: routes.modal },
     { label: 'Table', path: routes.table },
+    { label: 'Counter', path: routes.counter },
   ];
 
   const renderedLinks = links.map((link) => {

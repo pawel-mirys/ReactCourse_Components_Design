@@ -4,4 +4,5 @@ export const routes = {
   buttons: '/buttons',
   modal: '/modal',
   table: '/table',
+  counter: '/counter',
 };

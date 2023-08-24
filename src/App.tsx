@@ -3,6 +3,7 @@ import { routes } from './components/Route/routes';
 import { SideBar } from './components/Sidebar/SideBar';
 import { AccordionPage } from './pages/AccordionPage/AccordionPage';
 import { ButtonPage } from './pages/ButtonPage/ButtonPage';
+import { CounterPage } from './pages/CounterPage/CounterPage';
 import { DropdownPage } from './pages/DropdownPage/DropdownPage';
 import { ModalPage } from './pages/ModalPage/ModalPage';
 import { TablePage } from './pages/TablePage/TablePage';
@@ -26,6 +27,9 @@ function App() {
         </Route>
         <Route path={routes.table}>
           <TablePage />
+        </Route>
+        <Route path={routes.counter}>
+          <CounterPage initialCount={10} />
         </Route>
       </div>
     </div>
