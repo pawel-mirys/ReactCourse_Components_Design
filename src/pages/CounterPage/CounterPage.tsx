@@ -1,9 +1,10 @@
+import { produce } from 'immer';
 import { useReducer } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Panel } from '../../components/Panel/Panel';
 
-type INCREMENT = { type: 'increment'; payload: number };
-type DECREMENT = { type: 'decrement'; payload: number };
+type INCREMENT = { type: 'increment' };
+type DECREMENT = { type: 'decrement' };
 type CHANGE_VALUE_TO_ADD = { type: 'change-value-to-add'; payload: number };
 type ADD_VALUE_TO_COUNT = { type: 'add-value-to-count' };
 type RESET = { type: 'reset' };
@@ -27,39 +28,29 @@ type CounterProps = {
 const reducer = (state: CounterState, action: CounterAction) => {
   switch (action.type) {
     case 'increment':
-      return {
-        ...state,
-        count: state.count + action.payload,
-      };
+      state.count = state.count + 1;
+      return;
     case 'decrement':
-      return {
-        ...state,
-        count: state.count - action.payload,
-      };
+      state.count = state.count - 1;
+      return;
     case 'change-value-to-add':
-      return {
-        ...state,
-        valueToAdd: action.payload,
-      };
+      state.valueToAdd = action.payload;
+      return;
     case 'add-value-to-count':
-      return {
-        ...state,
-        count: state.valueToAdd + state.count,
-        valueToAdd: 0,
-      };
+      state.count = state.count + state.valueToAdd;
+      state.valueToAdd = 0;
+      return;
     case 'reset':
-      return {
-        ...state,
-        count: (state.count = 0),
-        valueToAdd: (state.valueToAdd = 0),
-      };
+      state.count = 0;
+      state.valueToAdd = 0;
+      return;
     default:
-      throw new Error('unexpected action type');
+      return;
   }
 };
 
 export const CounterPage: React.FC<CounterProps> = ({ initialCount }) => {
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(produce(reducer), {
     count: initialCount,
     valueToAdd: 0,
   });
@@ -69,14 +60,12 @@ export const CounterPage: React.FC<CounterProps> = ({ initialCount }) => {
   const increment = () => {
     dispatch({
       type: 'increment',
-      payload: 1,
     });
   };
 
   const decrement = () => {
     dispatch({
       type: 'decrement',
-      payload: 1,
     });
   };
 
